@@ -1,0 +1,13 @@
+{
+  "_help": "Copy this file to google.json and fill in your values. See README.md for instructions.",
+  "keyFile": "config/service-account.json",
+  "rootFolderName": "Doetinchemshart",
+  "rootFolderId": "",
+  "folders": {
+    "activiteiten":            { "path": ["Activiteiten"],                       "roles": ["BESTUUR", "LEDEN"] },
+    "bestuur-agenda":          { "path": ["Bestuursplatform", "Agenda"],         "roles": ["BESTUUR"] },
+    "bestuur-notulen":         { "path": ["Bestuursplatform", "Notulen"],        "roles": ["BESTUUR"] },
+    "bestuur-diversen":        { "path": ["Bestuursplatform", "Diversen"],       "roles": ["BESTUUR"] },
+    "bestuur-activiteiten":    { "path": ["Bestuursplatform", "Activiteiten"],   "roles": ["BESTUUR"] }
+  }
+}

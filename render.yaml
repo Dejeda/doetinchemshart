@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: doetinchemshart
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TURSO_DATABASE_URL
+        sync: false  # libsql://<your-db>.turso.io
+      - key: TURSO_AUTH_TOKEN
+        sync: false  # Turso auth token
+      - key: GOOGLE_SERVICE_ACCOUNT_JSON
+        sync: false  # full content of service-account.json
+      - key: DRIVE_ROOT_FOLDER_ID
+        sync: false  # Drive folder ID of "Doetinchemshart"
+      - key: INITIAL_BESTUUR_USERNAME
+        sync: false  # only used on first boot when no users exist
+      - key: INITIAL_BESTUUR_PASSWORD
+        sync: false  # min 8 chars; only used on first boot
+      - key: INITIAL_BESTUUR_NAME
+        sync: false
+      - key: INITIAL_BESTUUR_EMAIL
+        sync: false

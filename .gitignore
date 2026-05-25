@@ -1,0 +1,8 @@
+node_modules/
+client/node_modules/
+client/dist/
+data/
+config/service-account.json
+config/google.json
+.env
+.DS_Store

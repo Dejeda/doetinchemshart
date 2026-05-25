@@ -1,0 +1,26 @@
+{
+  "name": "doetinchemshart-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local web app for vereniging Doetinchems Hart",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "npm --prefix client run build",
+    "postinstall": "npm --prefix client install"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.14.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.19.2",
+    "googleapis": "^144.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
