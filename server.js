@@ -72,7 +72,25 @@ async function maybeSeedInitialUser() {
   console.log(`[seed] Initieel BESTUUR-account "${username}" aangemaakt.`);
 }
 
+function logEnvDiagnostic() {
+  const expected = [
+    'NODE_ENV',
+    'TURSO_DATABASE_URL',
+    'TURSO_AUTH_TOKEN',
+    'GOOGLE_SERVICE_ACCOUNT_JSON',
+    'GOOGLE_APP_CONFIG_JSON',
+    'DRIVE_ROOT_FOLDER_ID',
+    'INITIAL_BESTUUR_USERNAME',
+    'INITIAL_BESTUUR_PASSWORD',
+  ];
+  const present = expected.filter((k) => process.env[k] && String(process.env[k]).trim());
+  const missing = expected.filter((k) => !process.env[k] || !String(process.env[k]).trim());
+  console.log(`[env] aanwezig: ${present.join(', ') || '(geen)'}`);
+  if (missing.length) console.log(`[env] ontbrekend/leeg: ${missing.join(', ')}`);
+}
+
 (async () => {
+  logEnvDiagnostic();
   configureCookies({ secure: isProd });
 
   try {
