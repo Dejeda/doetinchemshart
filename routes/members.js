@@ -11,6 +11,7 @@ function publicView(u) {
 
 router.get('/', (req, res) => {
   const users = readJson(FILE, []);
+  console.log(`[members] GET / door ${req.user.username} (${req.user.role}) → ${users.length} users teruggestuurd`);
   res.json(users.map(publicView));
 });
 
