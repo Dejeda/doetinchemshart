@@ -157,3 +157,80 @@ td.actions { text-align: right; }
   border: 1px dashed var(--border);
   border-radius: 8px;
 }
+
+/* ----- Mobile / hamburger menu ----- */
+
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 60;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  background: #1f2937;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 40;
+}
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+
+  .hamburger { display: flex; }
+  .backdrop { display: block; }
+
+  .layout { flex-direction: column; }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 80vw;
+    max-width: 280px;
+    z-index: 50;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease-out;
+    overflow-y: auto;
+  }
+  .sidebar.open { transform: translateX(0); }
+
+  .main {
+    padding: 1rem;
+    padding-top: 3.75rem; /* room for the hamburger button */
+    max-width: 100%;
+  }
+
+  .grid-2 { grid-template-columns: 1fr; }
+
+  /* Tables stay readable on phones: let the card scroll horizontally if needed */
+  .card { overflow-x: auto; }
+  table { min-width: 32rem; } /* preserves column alignment; card scrolls if narrower */
+
+  .login-card {
+    width: auto;
+    max-width: 360px;
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main { padding: 0.75rem; padding-top: 3.75rem; }
+  .card { padding: 1rem; }
+}

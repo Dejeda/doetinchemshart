@@ -1,14 +1,30 @@
-import React from 'react';
-import { NavLink, Outlet } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth.jsx';
 
 export default function Layout({ sections = [] }) {
   const { user, logout } = useAuth();
   const isBestuur = user.role === 'BESTUUR';
+  const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => { setMenuOpen(false); }, [location.pathname]);
 
   return (
     <div className="layout">
-      <aside className="sidebar">
+      <button
+        type="button"
+        className="hamburger"
+        aria-label={menuOpen ? 'Menu sluiten' : 'Menu openen'}
+        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen((v) => !v)}
+      >
+        {menuOpen ? '✕' : '☰'}
+      </button>
+
+      {menuOpen && <div className="backdrop" onClick={() => setMenuOpen(false)} />}
+
+      <aside className={`sidebar${menuOpen ? ' open' : ''}`}>
         <h1><span className="heart">♥</span> Doetinchems Hart</h1>
         <div className="section">Algemeen</div>
         <nav>
