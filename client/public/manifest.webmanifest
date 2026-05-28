@@ -1,0 +1,19 @@
+{
+  "name": "Doetinchems Hart App",
+  "short_name": "Doetinchems Hart",
+  "description": "Platform voor bestuur en leden van vereniging Doetinchems Hart.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#2e7d32",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
