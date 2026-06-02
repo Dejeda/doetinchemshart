@@ -26,3 +26,11 @@ services:
         sync: false
       - key: INITIAL_BESTUUR_EMAIL
         sync: false
+      - key: GOOGLE_OAUTH_CLIENT_ID
+        sync: false  # Web-app OAuth client ID from Google Cloud Console
+      - key: GOOGLE_OAUTH_CLIENT_SECRET
+        sync: false  # Web-app OAuth client secret
+      - key: BESTUUR_EMAILS
+        sync: false  # comma-separated, lowercase; these e-mails get BESTUUR role on login
+      - key: LEDEN_EMAILS
+        sync: false  # comma-separated, lowercase; these e-mails get LEDEN role on login
