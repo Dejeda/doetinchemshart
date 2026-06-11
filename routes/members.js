@@ -6,7 +6,15 @@ const router = express.Router();
 const FILE = 'users.json';
 
 function publicView(u) {
-  return { username: u.username, name: u.name || u.username, role: u.role, email: u.email || '' };
+  return {
+    username: u.username,
+    name: u.name || u.username,
+    role: u.role,
+    email: u.email || '',
+    authProvider: u.authProvider || (u.passwordHash ? 'password' : 'unknown'),
+    has2FA: !!(u.totpSecret && u.totpEnabledAt),
+    hasPassword: !!u.passwordHash,
+  };
 }
 
 router.get('/', (req, res) => {
@@ -32,6 +40,7 @@ router.post('/', async (req, res) => {
     role,
     passwordHash: await bcrypt.hash(password, 10),
     createdAt: new Date().toISOString(),
+    authProvider: 'password',
   };
   users.push(user);
   await writeJson(FILE, users);
@@ -66,6 +75,17 @@ router.delete('/:username', async (req, res) => {
   if (next.length === users.length) return res.status(404).json({ error: 'Niet gevonden' });
   await writeJson(FILE, next);
   res.json({ ok: true });
+});
+
+router.post('/:username/reset-2fa', async (req, res) => {
+  const users = readJson(FILE, []);
+  const idx = users.findIndex((u) => u.username === req.params.username);
+  if (idx === -1) return res.status(404).json({ error: 'Niet gevonden' });
+  delete users[idx].totpSecret;
+  delete users[idx].totpEnabledAt;
+  delete users[idx].backupCodes;
+  await writeJson(FILE, users);
+  res.json({ ok: true, user: publicView(users[idx]) });
 });
 
 module.exports = router;

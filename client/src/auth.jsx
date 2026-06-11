@@ -15,9 +15,21 @@ export function AuthProvider({ children }) {
   }, []);
 
   async function login(username, password) {
-    const u = await api.post('/api/auth/login', { username, password });
-    setUser(u);
-    return u;
+    const data = await api.post('/api/auth/login', { username, password });
+    if (data && (data.requires2FA || data.requires2FASetup)) return data;
+    setUser(data);
+    return data;
+  }
+
+  async function refresh() {
+    try {
+      const u = await api.get('/api/auth/me');
+      setUser(u);
+      return u;
+    } catch {
+      setUser(null);
+      return null;
+    }
   }
 
   async function logout() {
@@ -26,7 +38,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthCtx.Provider value={{ user, loading, login, logout, setUser }}>
+    <AuthCtx.Provider value={{ user, loading, login, logout, refresh, setUser }}>
       {children}
     </AuthCtx.Provider>
   );

@@ -34,3 +34,5 @@ services:
         sync: false  # comma-separated, lowercase; these e-mails get BESTUUR role on login
       - key: LEDEN_EMAILS
         sync: false  # comma-separated, lowercase; these e-mails get LEDEN role on login
+      - key: TOTP_ENCRYPTION_KEY
+        sync: false  # 64-char hex (32 bytes). Generate: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"

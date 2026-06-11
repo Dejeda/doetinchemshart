@@ -3,6 +3,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './auth.jsx';
 import { api } from './api';
 import Login from './pages/Login.jsx';
+import Setup2FA from './pages/Setup2FA.jsx';
+import Verify2FA from './pages/Verify2FA.jsx';
 import Layout from './pages/Layout.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Announcements from './pages/Announcements.jsx';
@@ -31,6 +33,8 @@ export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/setup-2fa" element={<Setup2FA />} />
+      <Route path="/verify-2fa" element={<Verify2FA />} />
       <Route
         path="/"
         element={

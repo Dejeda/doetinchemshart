@@ -22,8 +22,14 @@ export default function Login() {
     setBusy(true);
     setError('');
     try {
-      await login(username, password);
-      nav('/', { replace: true });
+      const data = await login(username, password);
+      if (data && data.requires2FASetup) {
+        nav('/setup-2fa', { replace: true, state: { pendingToken: data.pendingToken } });
+      } else if (data && data.requires2FA) {
+        nav('/verify-2fa', { replace: true, state: { pendingToken: data.pendingToken } });
+      } else {
+        nav('/', { replace: true });
+      }
     } catch (err) {
       setError(err.message);
     } finally {

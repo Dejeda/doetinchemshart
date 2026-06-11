@@ -6,7 +6,7 @@ const empty = { username: '', name: '', email: '', role: 'LEDEN', password: '' }
 export default function Members() {
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState(empty);
-  const [editing, setEditing] = useState(null); // username being edited or null
+  const [editing, setEditing] = useState(null);
   const [error, setError] = useState('');
 
   function load() {
@@ -50,6 +50,23 @@ export default function Members() {
     }
   }
 
+  async function reset2FA(username) {
+    if (!confirm(`2FA resetten voor ${username}? Gebruiker moet opnieuw 2FA instellen bij volgende inlog.`)) return;
+    try {
+      await api.post(`/api/members/${username}/reset-2fa`);
+      load();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  function twoFALabel(u) {
+    if (u.authProvider === 'google') return 'Via Google';
+    if (u.has2FA) return 'Aan';
+    if (u.hasPassword) return 'Uit';
+    return '—';
+  }
+
   return (
     <>
       <h2>Leden &amp; accounts</h2>
@@ -57,7 +74,8 @@ export default function Members() {
       {error && <div className="error">{error}</div>}
 
       <form className="card" onSubmit={save}>
-        <h3>{editing ? `Bewerken: ${editing}` : 'Nieuw account'}</h3>
+        <h3>{editing ? `Bewerken: ${editing}` : 'Nieuw account (wachtwoord-noodingang)'}</h3>
+        <p className="muted">Voor Google-gebruikers hoef je hier niets aan te maken — zij komen automatisch bij hun eerste login. Dit formulier is voor de wachtwoord-noodingang.</p>
         <div className="grid-2">
           <div>
             <label>Gebruikersnaam</label>
@@ -102,7 +120,9 @@ export default function Members() {
         ) : (
           <table>
             <thead>
-              <tr><th>Gebruikersnaam</th><th>Naam</th><th>E-mail</th><th>Rol</th><th></th></tr>
+              <tr>
+                <th>Gebruikersnaam</th><th>Naam</th><th>E-mail</th><th>Rol</th><th>Inlogmethode</th><th>2FA</th><th></th>
+              </tr>
             </thead>
             <tbody>
               {users.map((u) => (
@@ -111,8 +131,15 @@ export default function Members() {
                   <td>{u.name}</td>
                   <td>{u.email || '—'}</td>
                   <td><span className={`role-badge ${u.role === 'BESTUUR' ? 'bestuur' : ''}`}>{u.role}</span></td>
+                  <td>{u.authProvider === 'google' ? 'Google' : 'Wachtwoord'}</td>
+                  <td>{twoFALabel(u)}</td>
                   <td className="actions">
                     <button className="ghost" onClick={() => edit(u)}>Bewerken</button>{' '}
+                    {u.has2FA && u.authProvider !== 'google' && (
+                      <>
+                        <button className="ghost" onClick={() => reset2FA(u.username)}>Reset 2FA</button>{' '}
+                      </>
+                    )}
                     <button className="danger" onClick={() => del(u.username)}>Verwijderen</button>
                   </td>
                 </tr>
